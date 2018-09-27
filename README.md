@@ -1,2 +1,3 @@
-# simple-todo-app
-Simple TODO app. with React Native.
+# Simple DOTO Application.
+
+Simple TODO application with React Native.
