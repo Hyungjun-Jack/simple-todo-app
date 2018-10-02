@@ -17,9 +17,9 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
-        <Text style={styles.title}>Simple    To Do</Text>
+        <Text style={styles.title}>Simple To Do</Text>
         <View style={styles.card}>
-          <TextInput placeHolder={"New To Do"} />
+          <TextInput style={styles.input} placeholder={"New To Do"} />
         </View>
       </View>
     );
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         }
       },
       android: {
-        elevation: 3
+        elevation:5
       }
     })
   }
