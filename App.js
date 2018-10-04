@@ -36,7 +36,7 @@ export default class App extends React.Component {
             underlineColorAndroid={"transparent"}
           />
           <ScrollView contentContainerStyle={styles.todos}>
-            <ToDo />
+            <ToDo text={"Hello, I'm a To Do"}/>
           </ScrollView>
         </View>
       </View>
