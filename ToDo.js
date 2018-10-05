@@ -34,8 +34,8 @@ export default class ToDo extends Component {
           {isEditing ? (
             <TextInput
               style={[
-                styles.input,
                 styles.text,
+                styles.input,
                 isCompleted ? styles.completedText : styles.unFcompletedText
               ]}
               value={toDoValue}
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "600",
     fontSize: 20,
-    marginVertical: 20
+    marginVertical: 20,
   },
   circle: {
     width: 30,
@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: width / 2,
-    marginVertical: 20
+    marginVertical: 15,
+    paddingBottom: 5
   }
 });
