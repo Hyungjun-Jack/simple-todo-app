@@ -8,18 +8,39 @@ import {
   TextInput
 } from "react-native";
 import { ViewPagerAndroid } from "react-native-gesture-handler";
+import PropTypes from "prop-types";
 
 const { width, height } = Dimensions.get("window");
 
 export default class ToDo extends Component {
-  state = {
-    isEditing: false,
-    isCompleted: false,
-    toDoValue: ""
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditing: false,
+      toDoValue: props.text
+    };
+  }
+  static propTypes = {
+    text: PropTypes.string.isRequired,
+    isCompleted: PropTypes.bool.isRequired,
+    deleteToDo: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    //completeToDo: PropTypes.func.isReruired,
+    //uncompleteToDo: PropTypes.func.isReruired,
+    //updateToDo: PropTypes.func.isReruired
   };
+
   render() {
-    const { isCompleted, isEditing, toDoValue } = this.state;
-    const { text } = this.props;
+    const { isEditing, toDoValue } = this.state;
+    const {
+      text,
+      id,
+      deleteToDo,
+      completeToDo,
+      uncompleteToDo,
+      updateToDo,
+      isCompleted
+    } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.column}>
@@ -49,7 +70,7 @@ export default class ToDo extends Component {
             <Text
               style={[
                 styles.text,
-                isCompleted ? styles.completedText : styles.unFcompletedText
+                isCompleted ? styles.completedText : styles.uncompletedText
               ]}
             >
               {text}
@@ -71,7 +92,7 @@ export default class ToDo extends Component {
                 <Text>✏️</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPressOut={() => deleteToDo(id)}>
               <View style={styles.actionsContainer}>
                 <Text>❌</Text>
               </View>
@@ -83,22 +104,22 @@ export default class ToDo extends Component {
   }
 
   _toggleCompleted = () => {
-    this.setState(prevState => {
-      return {
-        isCompleted: !prevState.isCompleted
-      };
-    });
+    const { completeToDo, uncompleteToDo, isCompleted, id } = this.props;
+    if (isCompleted) uncompleteToDo(id);
+    else completeToDo(id);
   };
 
   _startEditing = () => {
-    const { text } = this.props;
     this.setState({
-      isEditing: true,
-      toDoValue: text
+      isEditing: true
     });
   };
 
   _endEditing = () => {
+    const { toDoValue } = this.state;
+    const { updateToDo, id } = this.props;
+    updateToDo(id, toDoValue);
+
     this.setState({
       isEditing: false
     });
@@ -123,7 +144,7 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "600",
     fontSize: 20,
-    marginVertical: 20,
+    marginVertical: 20
   },
   circle: {
     width: 30,
@@ -148,7 +169,6 @@ const styles = StyleSheet.create({
   column: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     width: width / 2
   },
   actions: {
