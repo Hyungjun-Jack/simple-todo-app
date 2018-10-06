@@ -53,11 +53,13 @@ export default class App extends React.Component {
             {Object.values(toDos).map(toDo => (
               <ToDo
                 key={toDo.id}
-                {...toDo}
+                
                 deleteToDo={this._deleteToDo}
                 completeToDo={this._completeToDo}
                 uncompleteToDo={this._uncompleteToDo}
                 updateToDo={this._updateToDo}
+
+                {...toDo}
               />
             ))}
           </ScrollView>
@@ -135,6 +137,7 @@ export default class App extends React.Component {
       return { ...newState };
     });
   };
+ 
   _uncompleteToDo = id => {
     this.setState(prevState => {
       const newState = {

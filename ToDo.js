@@ -23,11 +23,11 @@ export default class ToDo extends Component {
   static propTypes = {
     text: PropTypes.string.isRequired,
     isCompleted: PropTypes.bool.isRequired,
-    deleteToDo: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
-    //completeToDo: PropTypes.func.isReruired,
-    //uncompleteToDo: PropTypes.func.isReruired,
-    //updateToDo: PropTypes.func.isReruired
+    deleteToDo: PropTypes.func.isRequired,
+    completeToDo: PropTypes.func.isRequired,
+    uncompleteToDo: PropTypes.func.isRequired,
+    updateToDo: PropTypes.func.isRequired
   };
 
   render() {
