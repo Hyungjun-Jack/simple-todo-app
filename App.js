@@ -6,7 +6,8 @@ import {
   StatusBar,
   TextInput,
   Dimensions,
-  Platform
+  Platform,
+  AsyncStorage
 } from "react-native";
 import { AppLoading } from "expo";
 import { ScrollView } from "react-native-gesture-handler";
@@ -50,15 +51,15 @@ export default class App extends React.Component {
             onSubmitEditing={this._addTodo}
           />
           <ScrollView contentContainerStyle={styles.todos}>
-            {Object.values(toDos).map(toDo => (
+            {Object.values(toDos)
+            .reverse()
+            .map(toDo => (
               <ToDo
                 key={toDo.id}
-                
                 deleteToDo={this._deleteToDo}
                 completeToDo={this._completeToDo}
                 uncompleteToDo={this._uncompleteToDo}
                 updateToDo={this._updateToDo}
-
                 {...toDo}
               />
             ))}
@@ -73,11 +74,34 @@ export default class App extends React.Component {
       newTodo: text
     });
   };
-  _loadToDos = () => {
-    this.setState({
-      loadedTodos: true
-    });
+  _loadToDos = async () => {
+    try {
+      const toDos = await AsyncStorage.getItem("toDos");
+      const parsedToDos = JSON.parse(toDos);
+      this.setState({
+        loadedTodos: true,
+        toDos: parsedToDos || {}
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
+  _saveToDos = ( toDos ) => {
+    try {
+      AsyncStorage.setItem("toDos", JSON.stringify(toDos));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  _saveToDos2 = ( {toDos} ) => {
+    try {
+      AsyncStorage.setItem("toDos", JSON.stringify(toDos));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   _addTodo = () => {
     const { newTodo } = this.state;
     console.log(newTodo);
@@ -102,6 +126,8 @@ export default class App extends React.Component {
           }
         };
         console.log(newState);
+        //this._saveToDos(newState.toDos);
+        this._saveToDos2(newState);
         return { ...newState };
       });
     }
@@ -117,6 +143,7 @@ export default class App extends React.Component {
         ...toDos
       };
 
+      this._saveToDos(newState.toDos);
       return newState;
     });
   };
@@ -133,11 +160,11 @@ export default class App extends React.Component {
           }
         }
       };
-
+      this._saveToDos(newState.toDos);
       return { ...newState };
     });
   };
- 
+
   _uncompleteToDo = id => {
     this.setState(prevState => {
       const newState = {
@@ -150,7 +177,7 @@ export default class App extends React.Component {
           }
         }
       };
-
+      this._saveToDos(newState.toDos);
       return { ...newState };
     });
   };
@@ -166,7 +193,7 @@ export default class App extends React.Component {
           }
         }
       };
-
+      this._saveToDos(newState.toDos);
       return { ...newState };
     });
   };
